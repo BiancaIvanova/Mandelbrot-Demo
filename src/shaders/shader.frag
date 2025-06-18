@@ -1,0 +1,42 @@
+vec2 squareImaginary( in vec2 n )
+{
+   return vec2 (
+       n.x * n.x - n.y * n.y,
+       2.0 * n.x * n.y
+   );
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 currentPoint = fragCoord/iResolution.x;
+    float scale = 4.0;
+    currentPoint *= scale;
+    currentPoint += vec2(-2.4, -1.2);
+    
+    vec3 colorWeights = vec3(1.0, 1.0, 10.0);
+    
+    int maxIterations = 256;
+    vec2 mandelbrotNum = vec2(0, 0);
+     
+    fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+    
+    for (int i = 0; i < maxIterations; i += 1)
+    {
+        // Z(n+1) = Z(n)^2 + C
+        vec2 oldMandelbrotNum = mandelbrotNum;
+        mandelbrotNum = squareImaginary(oldMandelbrotNum) + currentPoint;
+        
+        if (dot(mandelbrotNum, mandelbrotNum) > 20.0)
+        {
+            float brightness = (float(i) - log2(log2(dot(mandelbrotNum, mandelbrotNum))) + 4.0) /
+                                    float(maxIterations);
+            fragColor = vec4(vec3(brightness) * colorWeights, 1.0);
+            break;
+        }
+        else
+        {
+            fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+        }
+    }
+}
+
