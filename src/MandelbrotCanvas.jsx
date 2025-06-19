@@ -1,0 +1,74 @@
+import { useEffect, useRef } from "react";
+import fragmentShader from "./shaders/shader.frag";
+
+const vertexShader = `
+attribute vec4 a_position;
+void main() {
+    gl_Position = a_position;
+}
+`;
+
+export default function MandelbrotCanvas() {
+    const canvasRef = useRef(null);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const gl = canvas.getContext("webgl");
+
+        function compileShader(type, source)
+        {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error(gl.getShaderInfoLog(shader));
+            }
+
+            return shader;
+        }
+
+        const vs = compileShader(gl.VERTEX_SHADER, vertexShader);
+        const fs = compileShader(gl.FRAGMENT_SHADER, fragmentShader);
+        const program = gl.createProgram();
+
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
+        gl.linkProgram(program);
+        gl.useProgram(program);
+
+        const position = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, position);
+        gl.bufferData(
+            gl.ARRAY_BUFFER,
+            new Float32Array([
+                -1, -1,  1, -1, -1,  1,
+                -1,  1,  1, -1,  1,  1
+            ]),
+            gl.STATIC_DRAW
+        );
+
+        const posLoc = gl.getAttribLocation(program, "a_position");
+        gl.enableVertexAttribArray(posLoc);
+        gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+        const iResolutionLoc = gl.getUniformLocation(program, "iResolution");
+        const iTimeLoc = gl.getUniformLocation(program, "iTime");
+
+        function render(time) {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+
+            gl.uniform2f(iResolutionLoc, canvas.width, canvas.height);
+            gl.uniform1f(iTimeLoc, time * 0.001);
+
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+            requestAnimationFrame(render);
+        }
+
+        render(0);
+    }, []);
+
+    return <canvas ref={canvasRef} style={{ width: "100vw", height: "100vh"}} />;
+}
