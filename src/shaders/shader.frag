@@ -11,6 +11,17 @@ vec2 squareImaginary( in vec2 n )
    );
 }
 
+void drawAxes( in vec2 currentPoint, inout vec4 color )
+{
+    float axesThickness = 0.003;
+    float axis = 0.0;
+
+    axis += smoothstep(axesThickness, 0.0, abs(currentPoint.x));
+    axis += smoothstep(axesThickness, 0.0, abs(currentPoint.y));
+
+    color.rgb = mix(color.rgb, vec3(1.0), clamp(axis, 0.0, 1.0));
+}
+
 void main()
 {
     vec2 fragCoord = gl_FragCoord.xy;
@@ -45,6 +56,9 @@ void main()
             color = vec4(0.0, 0.0, 0.0, 1.0);
         }
     }
+
+    // Draw axes
+    drawAxes(currentPoint, color);
 
     gl_FragColor = color;
 }
