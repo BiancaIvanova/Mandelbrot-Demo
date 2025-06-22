@@ -56,14 +56,16 @@ export default function MandelbrotCanvas() {
         const iTimeLoc = gl.getUniformLocation(program, "iTime");
 
         function resizeCanvas() {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
+            const dpr = window.devicePixelRatio || 1;
+            const supersampleValue = 2; // x2 the device pixel ratio
+            const width = Math.round(window.innerWidth * dpr * supersampleValue);
+            const height = Math.round(window.innerHeight * dpr * supersampleValue);
 
             canvas.width = width;
             canvas.height = height;
 
-            canvas.style.width = width + "px";
-            canvas.style.height = height + "px";
+            canvas.style.width = window.innerWidth + "px";
+            canvas.style.height = window.innerHeight + "px";
 
             gl.viewport(0, 0, width, height);
         }
