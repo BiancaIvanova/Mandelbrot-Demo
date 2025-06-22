@@ -56,16 +56,23 @@ export default function MandelbrotCanvas() {
         const iTimeLoc = gl.getUniformLocation(program, "iTime");
 
         function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            gl.viewport(0, 0, canvas.width, canvas.height);
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            canvas.width = width;
+            canvas.height = height;
+
+            canvas.style.width = width + "px";
+            canvas.style.height = height + "px";
+
+            gl.viewport(0, 0, width, height);
         }
 
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
         function render(time) {
-            gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+            gl.viewport(0, 0, canvas.width, canvas.height);
 
             gl.uniform2f(iResolutionLoc, canvas.width, canvas.height);
             gl.uniform1f(iTimeLoc, time * 0.001);
@@ -82,5 +89,9 @@ export default function MandelbrotCanvas() {
 
     }, []);
 
-    return <canvas ref={canvasRef} style={{ width: "100vw", height: "100vh"}} />;
+    return (
+        <div className="canvas-container">
+            <canvas ref={canvasRef} />
+        </div>
+    );
 }

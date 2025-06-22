@@ -25,20 +25,11 @@ a:hover {
 html, body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  height: 100%;
   width: 100%;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  height: 100%;
+  overflow: hidden;
 }
 
-canvas {
-  display: block;
-  width: 100vw;
-  height: 100vh;
-}
 
 h1 {
   font-size: 3.2em;

@@ -15,12 +15,13 @@ void main()
 {
     vec2 fragCoord = gl_FragCoord.xy;
 
-    vec2 currentPoint = fragCoord/iResolution.x;
-    float scale = 4.0;
-    currentPoint *= scale;
-    currentPoint += vec2(-2.4, -1.2);
+    vec2 uv = (fragCoord - 0.5 * iResolution.xy) / iResolution.y;
+    float scale = 2.5;
+    vec2 center = vec2(-0.5, 0.0);
+    vec2 currentPoint = uv * scale + center;
     
-    vec3 colorWeights = vec3(1.0, 1.0, 10.0);
+    vec3 colorWeights = vec3(1.0, 1.0, 10.0 + sin(iTime));
+
     const int maxIterations = 256;
     vec2 mandelbrotNum = vec2(0, 0);
      

@@ -6,8 +6,6 @@ import glsl from 'vite-plugin-string';
 export default defineConfig({
   plugins: [
     react(),
-    glsl({
-      include: ['**/*.glsl', '**/*.frag', '**/*.vert'],
-    }),
+    glsl(),
   ],
 });
