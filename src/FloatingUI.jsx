@@ -1,6 +1,5 @@
 import React, { useState, useEffect} from 'react';
 import './FloatingUI.css';
-import githubLogo from '/assets/github-mark.svg';
 
 export const GitHubLink = () => {
     return (
@@ -10,7 +9,7 @@ export const GitHubLink = () => {
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                <img src={githubLogo} alt="GitHub Logo"/>
+                <img src="/Mandelbrot-Demo/assets/github-mark.svg" alt="GitHub Logo"/>
             </a>
         </div>
     )
