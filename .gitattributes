@@ -1,0 +1,11 @@
+# Ignore source files in deployment
+/src/
+/node_modules/
+/public/
+*.md
+package*.json
+vite.config.js
+eslint.config.js
+.env*
+.gitignore
+.github/
