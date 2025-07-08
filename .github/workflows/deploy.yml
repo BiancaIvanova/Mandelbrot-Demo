@@ -11,7 +11,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -32,6 +32,9 @@ jobs:
       
     - name: Build
       run: npm run build
+      
+    - name: Copy .nojekyll to dist
+      run: cp .nojekyll dist/
       
     - name: List build output
       run: ls -la dist/
@@ -58,3 +61,7 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+      with:
+        timeout: 600000
+        error_count: 10
+        reporting_interval: 10000

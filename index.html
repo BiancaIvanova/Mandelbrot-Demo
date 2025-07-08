@@ -9,5 +9,14 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <!-- Fallback detection for when source is served instead of built version -->
+    <script>
+      setTimeout(() => {
+        if (!window.React && !document.querySelector('[data-vite-dev-id]')) {
+          document.body.innerHTML = '<div style="color: red; text-align: center; padding: 50px;">Error: Source files being served instead of built version. Please wait for deployment to complete.</div>';
+          setTimeout(() => window.location.reload(), 5000);
+        }
+      }, 3000);
+    </script>
   </body>
 </html>
