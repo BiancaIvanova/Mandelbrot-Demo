@@ -11,6 +11,17 @@ Deployed to GitHub Pages here:
 - Smooth color shading using a double-log formula for better gradient transitions
 - Built with React and WebGL
 
+### Example Renders
+
+![Example 1](./public/examples/screenshot1.png)  
+*Zoomed-in detail, orange shading*
+
+![Example 2](./public/examples/screenshot2.png)  
+*Modified, 'broken' formula for the Mandelbrot set*
+
+![Example 3](./public/examples/screenshot3.png)
+*Basic Mandelbrot view*
+
 ### TODO
 - Add interactive zoom
 - Add UI toggles to control fractal viewer settings
