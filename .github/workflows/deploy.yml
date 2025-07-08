@@ -16,9 +16,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
     - name: Checkout
@@ -36,6 +33,12 @@ jobs:
     - name: Build
       run: npm run build
       
+    - name: List build output
+      run: ls -la dist/
+      
+    - name: Check index.html
+      run: cat dist/index.html
+      
     - name: Setup Pages
       uses: actions/configure-pages@v4
       
@@ -44,6 +47,14 @@ jobs:
       with:
         path: ./dist
         
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
