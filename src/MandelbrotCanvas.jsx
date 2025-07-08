@@ -73,20 +73,29 @@ export default function MandelbrotCanvas() {
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
+        let animationId;
         function render(time) {
+            // Check if WebGL context is still valid
+            if (gl.isContextLost()) {
+                return;
+            }
+            
             gl.viewport(0, 0, canvas.width, canvas.height);
 
             gl.uniform2f(iResolutionLoc, canvas.width, canvas.height);
             gl.uniform1f(iTimeLoc, time * 0.001);
 
             gl.drawArrays(gl.TRIANGLES, 0, 6);
-            requestAnimationFrame(render);
+            animationId = requestAnimationFrame(render);
         }
 
         render(0);
 
         return () => {
             window.removeEventListener('resize', resizeCanvas);
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
         };
 
     }, []);
